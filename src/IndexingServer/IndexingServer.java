@@ -1,6 +1,8 @@
 package IndexingServer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,7 +61,7 @@ public IndexingServer(int port) {
 		switch(commands[0]){
 	        case "-r":
 	        	//register
-	        	process_result=register(commands[1], commands[2]);
+	        	process_result=register(commands[1], commands[2], commands[3]);
 	            break;
 	        case "-s": 
 	        	//search
@@ -73,21 +75,28 @@ public IndexingServer(int port) {
 	}
 
 	@Override
-	public String register(String name, String fileName) {
+	public String register(String peerName, String privateAddress, String fileName) {
+		InetSocketAddress publicAddress=(InetSocketAddress) getSocket().getRemoteSocketAddress();
 		for(Peer p:Peers){
 			//if peer is already there
-			if(p.getName().equals(name)){
+			if(p.getPeerName().equals(peerName)){
 				p.addFile(fileName);
-				return "Registration "+p.getName()+" "+Constants.ACTION_SUCCESS;
+				p.updatePrivateAddress(privateAddress);
+				p.updatePublicAddress(publicAddress.toString());
+				return "Registration "+p.getPeerName()+" "+
+						 p.getPrivateAddress()+" "+
+						 p.getPublicAddress()+" "+Constants.ACTION_SUCCESS;
 			}
 		}
 		
 		//new peer
-		Peer mPeer=new Peer(name);
+		Peer mPeer=new Peer(peerName, privateAddress, publicAddress.toString());
 		mPeer.addFile(fileName);
 
 		Peers.add(mPeer);
-		return "Registration "+mPeer.getName()+" "+Constants.ACTION_SUCCESS;
+		return "Registration "+mPeer.getPeerName()+" "+
+				mPeer.getPrivateAddress()+" "+
+				mPeer.getPublicAddress()+" "+Constants.ACTION_SUCCESS;
 	}
 
 	@Override
@@ -98,10 +107,10 @@ public IndexingServer(int port) {
 				if(file.contains(name)){
 					Utils.log(TAG, "found file");
 					if(response.equals("null")){
-						response= p.getName()+" "+file+";";
+						response= p.getPublicAddress()+" "+p.getPrivateAddress()+" "+file+";";
 						Utils.log(TAG, response);
 					}else{
-						response= response+p.getName()+" "+file+";";
+						response= response+p.getPublicAddress()+" "+p.getPrivateAddress()+" "+file+";";
 						Utils.log(TAG, "more");
 						Utils.log(TAG, response);
 					}

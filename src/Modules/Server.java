@@ -60,7 +60,6 @@ public class Server implements Runnable, ProcessRequest{
 
                 String read = in.readLine();
                 if( read != null) {
-                	InetAddress remoteAddress=socket.getInetAddress();
                     String result=process(read);
                     output.println(result);
                     output.flush();
@@ -81,5 +80,10 @@ public class Server implements Runnable, ProcessRequest{
 		Utils.log(TAG, "data received " + read);
 		return null;
 	}
+
+	public Socket getSocket(){
+		return socket;
+	}
+
 
 }
