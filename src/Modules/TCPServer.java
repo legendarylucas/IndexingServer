@@ -11,14 +11,14 @@ import java.util.List;
 
 import Interfaces.ProcessRequest;
 
-public class Server implements Runnable, ProcessRequest{
-	public final static String TAG="SERVER>";
+public class TCPServer implements Runnable, ProcessRequest{
+	public final static String TAG="TCP_SERVER>";
 	private ServerSocket serverSocket = null;
 	private int listeningPort=0;
 	private Socket socket=null;
 	private boolean terminate=false;
 	
-	public Server(int port){
+	public TCPServer(int port){
 		this.listeningPort=port;
 		
 	}
@@ -39,7 +39,7 @@ public class Server implements Runnable, ProcessRequest{
 			//terminate server if thread is interrupted or forced to stop
 			if(terminate||Thread.currentThread().isInterrupted()){
                 try {
-                	Utils.log(TAG, "Server is terminated");
+                	Utils.log(TAG, "TCPServer is terminated");
                 	if(socket!=null){
                 		socket.close();
                 	}

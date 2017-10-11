@@ -31,7 +31,7 @@ public class Peer{
 	public String getPublicAddress(){return publicAddress;}
 
 	public void updatePublicAddress(String address){
-		this.privateAddress=address;
+		this.publicAddress=address;
 	}
 	
 	public void addFile(String fileName){
