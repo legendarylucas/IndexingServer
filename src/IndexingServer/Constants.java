@@ -1,4 +1,4 @@
-package Interfaces;
+package IndexingServer;
 
 public interface Constants {
 	public static final String ACTION_SUCCESS="Success";

@@ -1,6 +1,4 @@
-package Interfaces;
-
-import java.util.List;
+package IndexingServer;
 
 public interface ProcessRequest {
 	public String process(String request);

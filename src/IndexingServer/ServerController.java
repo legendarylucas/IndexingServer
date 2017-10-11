@@ -1,6 +1,4 @@
-package Modules;
-
-import Interfaces.Constants;
+package IndexingServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,8 +6,8 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
-import static Interfaces.Constants.TCP_REGISTER;
-import static Interfaces.Constants.UDP_REGISTER;
+import static IndexingServer.Constants.TCP_REGISTER;
+import static IndexingServer.Constants.UDP_REGISTER;
 
 public class ServerController implements Runnable{
 	private static final String TAG="ServerController>";

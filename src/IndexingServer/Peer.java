@@ -1,4 +1,4 @@
-package Modules;
+package IndexingServer;
 
 import java.util.ArrayList;
 

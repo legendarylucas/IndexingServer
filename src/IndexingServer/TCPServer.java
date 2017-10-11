@@ -1,15 +1,11 @@
-package Modules;
+package IndexingServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-
-import Interfaces.ProcessRequest;
 
 public class TCPServer implements Runnable, ProcessRequest{
 	public final static String TAG="TCP_SERVER>";

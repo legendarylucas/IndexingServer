@@ -1,13 +1,10 @@
 package IndexingServer;
 
-import Modules.UDPServer;
-import Modules.Utils;
-
 import java.net.SocketException;
 
-import static Interfaces.Constants.TCP_REGISTER;
-import static Modules.ServerController.register;
-import static Modules.ServerController.search;
+import static IndexingServer.Constants.TCP_REGISTER;
+import static IndexingServer.ServerController.register;
+import static IndexingServer.ServerController.search;
 
 public class UDPIndexingServer extends UDPServer{
     public final static String TAG="UDP_INDEXING_SERVER>";

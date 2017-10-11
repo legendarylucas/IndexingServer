@@ -1,4 +1,4 @@
-package Modules;
+package IndexingServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

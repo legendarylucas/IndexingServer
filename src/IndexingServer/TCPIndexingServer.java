@@ -3,13 +3,9 @@ package IndexingServer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 
-import Modules.Peer;
-import Modules.TCPServer;
-import Modules.Utils;
-
-import static Interfaces.Constants.TCP_REGISTER;
-import static Modules.ServerController.register;
-import static Modules.ServerController.search;
+import static IndexingServer.Constants.TCP_REGISTER;
+import static IndexingServer.ServerController.register;
+import static IndexingServer.ServerController.search;
 
 public class TCPIndexingServer extends TCPServer {
 	private final static String TAG="TCP_INDEXING_SERVER>";

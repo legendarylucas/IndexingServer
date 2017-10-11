@@ -1,8 +1,5 @@
 package IndexingServer;
 
-import Modules.ServerController;
-import Modules.Utils;
-
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
