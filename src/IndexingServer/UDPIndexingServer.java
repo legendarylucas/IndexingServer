@@ -3,6 +3,7 @@ package IndexingServer;
 import java.net.SocketException;
 
 import static IndexingServer.Constants.TCP_REGISTER;
+import static IndexingServer.Constants.UDP_REGISTER;
 import static IndexingServer.ServerController.register;
 import static IndexingServer.ServerController.search;
 
@@ -22,7 +23,7 @@ public class UDPIndexingServer extends UDPServer{
         switch(commands[0]){
             case "-udpr":
                 //register
-                process_result=register(commands[1], commands[2], commands[3], TCP_REGISTER);
+                process_result=register(commands[1], commands[2], commands[3], UDP_REGISTER);
                 break;
             case "-udps":
                 //search
