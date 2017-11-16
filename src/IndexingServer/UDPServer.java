@@ -1,10 +1,7 @@
 package IndexingServer;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 
 public class UDPServer implements Runnable, ProcessRequest{
     DatagramSocket serverSocket;
@@ -12,6 +9,7 @@ public class UDPServer implements Runnable, ProcessRequest{
     byte[] sendData = new byte[1024];
     private boolean terminate=false;
     public final static String TAG="UDP_SERVER>";
+    private InetSocketAddress remoteAddress;
 
     public UDPServer(int UDP_Port) throws SocketException {
         this.serverSocket = new DatagramSocket(UDP_Port);
@@ -41,11 +39,13 @@ public class UDPServer implements Runnable, ProcessRequest{
             try {
                 serverSocket.receive(receivePacket);
 
-                String sentence = new String( receivePacket.getData());
-                String output=process(sentence);
+                String sentence = new String( receivePacket.getData()).trim();
                 InetAddress IPAddress = receivePacket.getAddress();
                 int port = receivePacket.getPort();
+                remoteAddress=new InetSocketAddress(IPAddress,port);
+                String output=process(sentence);
                 sendData = output.getBytes();
+                Utils.log(TAG,output);
                 DatagramPacket sendPacket =
                         new DatagramPacket(sendData, sendData.length, IPAddress, port);
                 serverSocket.send(sendPacket);
@@ -63,7 +63,7 @@ public class UDPServer implements Runnable, ProcessRequest{
         return null;
     }
 
-    public DatagramSocket getSocket(){
-        return serverSocket;
+    public InetSocketAddress getRemoteAddress(){
+        return remoteAddress;
     }
 }

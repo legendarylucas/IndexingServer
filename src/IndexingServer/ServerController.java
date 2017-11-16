@@ -1,5 +1,7 @@
 package IndexingServer;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,12 +60,14 @@ public class ServerController implements Runnable{
 	}
 
 
+	@NotNull
 	public static String register(String peerName, String privateAddress, String fileName, String mode) {
 		InetSocketAddress publicAddress;
 		if(mode.equals(TCP_REGISTER)) {
 			publicAddress = (InetSocketAddress) tcp_server.getSocket().getRemoteSocketAddress();
 		}else if(mode.equals(UDP_REGISTER)){
-			publicAddress = (InetSocketAddress) udp_server.getSocket().getRemoteSocketAddress();
+			Utils.log(TAG,"here");
+			publicAddress =  udp_server.getRemoteAddress();
 		}else{
 			return "Registration "+Constants.ACTION_Fail;
 		}
