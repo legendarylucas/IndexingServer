@@ -3,10 +3,7 @@ package IndexingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Enumeration;
 
 public class Utils {
@@ -65,5 +62,33 @@ public class Utils {
 	public static InetAddress getLocalIp() {
 		getWlanAdapter();
 		return inetAddress;
+	}
+
+	public static InetSocketAddress stringToSocketAddress(String address){
+		String host;
+		int port;
+
+		try {
+			if(address.equals("null"))
+				return null;
+			// WORKAROUND: add any scheme to make the resulting URI valid.
+			URI uri = new URI("my:/" + address); // may throw URISyntaxException
+			host = uri.getHost();
+			port = uri.getPort();
+
+			if (uri.getHost() == null || uri.getPort() == -1) {
+				throw new URISyntaxException(uri.toString(),
+						"URI must have host and port parts");
+			}
+
+			// here, additional checks can be performed, such as
+			// presence of path, query, fragment, ...
+			return new InetSocketAddress(host,port);
+
+		} catch (URISyntaxException ex) {
+			// validation failed
+			ex.printStackTrace();
+			return null;
+		}
 	}
 }

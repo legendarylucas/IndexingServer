@@ -35,6 +35,7 @@ public class UDPServer implements Runnable, ProcessRequest{
                 break;
             }
 
+            receiveData=new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             try {
                 serverSocket.receive(receivePacket);

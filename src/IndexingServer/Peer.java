@@ -1,14 +1,14 @@
 package IndexingServer;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class Peer{
-	private String privateAddress;
-	private String publicAddress;
+	private InetSocketAddress privateAddress;
+	private InetSocketAddress publicAddress;
 	private String peerName;
-	private ArrayList<String> files=new ArrayList<String>();
-	
-	public Peer(String peerName, String privateAddress, String publicAddress){
+
+	public Peer(String peerName, InetSocketAddress privateAddress, InetSocketAddress publicAddress){
 		this.peerName=peerName;
 		this.privateAddress =privateAddress;
 		this.publicAddress=publicAddress;
@@ -20,35 +20,21 @@ public class Peer{
 		this.peerName=name;
 	}
 
-	public String getPrivateAddress(){
+	public InetSocketAddress getPrivateAddress(){
 		return privateAddress;
 	}
 
-	public void updatePrivateAddress(String address){
-		this.privateAddress=address;
+	public void updatePrivateAddress(InetSocketAddress address){
+		if(address!=null) {
+			this.privateAddress = address;
+		}
 	}
 
-	public String getPublicAddress(){return publicAddress;}
+	public InetSocketAddress getPublicAddress(){return publicAddress;}
 
-	public void updatePublicAddress(String address){
+	public void updatePublicAddress(InetSocketAddress address){
 		this.publicAddress=address;
 	}
 	
-	public void addFile(String fileName){
-		files.add(fileName);
-	}
-	
-	public String getFile(String documentName){
-		for(String fileName: files){
-			if(fileName.contains(documentName)){
-				return fileName;
-			}
-		}
-		return "null";
-	}
-
-	 public ArrayList<String> getFiles(){
-		 return files;
-	 }
 
 }

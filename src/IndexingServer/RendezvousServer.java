@@ -2,16 +2,15 @@ package IndexingServer;
 
 import java.net.SocketException;
 
-import static IndexingServer.Constants.TCP_REGISTER;
 import static IndexingServer.Constants.UDP_REGISTER;
 import static IndexingServer.ServerController.register;
-import static IndexingServer.ServerController.search;
+import static IndexingServer.Utils.stringToSocketAddress;
 
-public class UDPIndexingServer extends UDPServer{
+public class RendezvousServer extends UDPServer{
     public final static String TAG="UDP_INDEXING_SERVER>";
 
 
-    public UDPIndexingServer(int UDP_Port) throws SocketException {
+    public RendezvousServer(int UDP_Port) throws SocketException {
         super(UDP_Port);
     }
 
@@ -23,11 +22,7 @@ public class UDPIndexingServer extends UDPServer{
         switch(commands[0]){
             case "-udpr":
                 //register
-                process_result=register(commands[1], commands[2], commands[3], UDP_REGISTER);
-                break;
-            case "-udps":
-                //search
-                process_result=search(commands[1]);
+                process_result=register(commands[1], stringToSocketAddress(commands[2]), UDP_REGISTER);
                 break;
             default:
                 process_result="null";

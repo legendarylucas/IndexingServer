@@ -27,10 +27,12 @@ public class TCPServer implements Runnable, ProcessRequest{
 	public void run() {
 		try {
             serverSocket = new ServerSocket(listeningPort);
+			socket = serverSocket.accept();
+			socket.setReuseAddress(true);
         } catch (IOException e) {
             Utils.log(TAG, e.toString());
         }
-		
+
 		while (true) {
 			//terminate server if thread is interrupted or forced to stop
 			if(terminate||Thread.currentThread().isInterrupted()){
@@ -47,11 +49,8 @@ public class TCPServer implements Runnable, ProcessRequest{
             }
 			try {
                 BufferedReader in = null;
-                socket = serverSocket.accept();
-                socket.setReuseAddress(true);
                 in = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
-                
                 PrintStream output = new PrintStream(socket.getOutputStream());
 
                 String read = in.readLine();
@@ -59,9 +58,6 @@ public class TCPServer implements Runnable, ProcessRequest{
                     String result=process(read);
                     output.println(result);
                     output.flush();
-                    
-                }else {
-                    socket.close();
                 }
 
             } catch (IOException e) {

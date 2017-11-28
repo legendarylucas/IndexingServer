@@ -60,23 +60,33 @@ public class ServerController implements Runnable{
 	}
 
 
-	@NotNull
-	public static String register(String peerName, String privateAddress, String fileName, String mode) {
+	//accept registration of peer and reply to client
+	public static String register(String peerName, InetSocketAddress privateAddress, String mode) {
+		//testing is only for 2 peers
+		if(Peers.size()>2){
+			clearPeers();
+		}
+
 		InetSocketAddress publicAddress;
 		if(mode.equals(TCP_REGISTER)) {
 			publicAddress = (InetSocketAddress) tcp_server.getSocket().getRemoteSocketAddress();
 		}else if(mode.equals(UDP_REGISTER)){
-			Utils.log(TAG,"here");
 			publicAddress =  udp_server.getRemoteAddress();
 		}else{
 			return "Registration "+Constants.ACTION_Fail;
 		}
+		String addResult=addPeer(peerName, privateAddress, publicAddress);
+		return addResult+";"+searchPeer(publicAddress);
+
+	}
+
+	//add peer to peer list
+	private static String addPeer(String peerName, InetSocketAddress privateAddress, InetSocketAddress publicAddress){
 		for(Peer p:Peers){
 			//if peer is already there
 			if(p.getPeerName().equals(peerName)){
-				p.addFile(fileName);
 				p.updatePrivateAddress(privateAddress);
-				p.updatePublicAddress(publicAddress.toString());
+				p.updatePublicAddress(publicAddress);
 				return "Registration "+p.getPeerName()+" "+
 						p.getPrivateAddress()+" "+
 						p.getPublicAddress()+" "+ Constants.ACTION_SUCCESS;
@@ -84,33 +94,32 @@ public class ServerController implements Runnable{
 		}
 
 		//new peer
-		Peer mPeer=new Peer(peerName, privateAddress, publicAddress.toString());
-		mPeer.addFile(fileName);
+		Peer mPeer=new Peer(peerName, privateAddress, publicAddress);
 
 		Peers.add(mPeer);
 		return "Registration "+mPeer.getPeerName()+" "+
 				mPeer.getPrivateAddress()+" "+
 				mPeer.getPublicAddress()+" "+Constants.ACTION_SUCCESS;
+
 	}
 
-
-	public static String search(String name) {
-		String response="null";
-		for(Peer p:Peers){
-			for(String file:p.getFiles()){
-				if(file.contains(name)){
-					Utils.log(TAG, "found file");
-					if(response.equals("null")){
-						response= p.getPublicAddress()+" "+p.getPrivateAddress()+" "+file+";";
-						Utils.log(TAG, response);
-					}else{
-						response= response+p.getPublicAddress()+" "+p.getPrivateAddress()+" "+file+";";
-						Utils.log(TAG, "more");
-						Utils.log(TAG, response);
-					}
-				}
+	//check remote address
+	private static InetSocketAddress searchPeer(InetSocketAddress publicAddress){
+		for(Peer p: Peers){
+			if(p.getPublicAddress()!=publicAddress){
+				return p.getPublicAddress();
 			}
 		}
-		return response;
+		return null;
 	}
+
+	private static void clearPeers(){
+		Utils.log(TAG, "registration cleared!");
+		Peers.clear();
+	}
+
+	private static int portAllocation(){
+		return 0;
+	}
+
 }
