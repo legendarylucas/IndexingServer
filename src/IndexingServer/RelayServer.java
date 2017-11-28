@@ -5,13 +5,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class RelayServer implements Runnable{
     DatagramSocket serverSocket1, serverSocket2;
     InetSocketAddress remoteAddress1, remoteAddress2;
-    ExecutorService executor= Executors.newFixedThreadPool(2);
 
     RelayServer(int port1, int port2) throws SocketException{
         serverSocket1=new DatagramSocket(port1);
@@ -43,7 +40,7 @@ public class RelayServer implements Runnable{
                 }
             }
         });
-        executor.submit(startPipe);
+        Main.getExecutor().submit(startPipe);
     }
 
     private void socket2ReceivceAndRelay(){
@@ -64,7 +61,7 @@ public class RelayServer implements Runnable{
                 }
             }
         });
-        executor.submit(startPipe);
+        Main.getExecutor().submit(startPipe);
     }
 
     private void socket2send(DatagramPacket dp) throws IOException{

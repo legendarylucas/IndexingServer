@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 
 
 public class Main {
+    private static ExecutorService executor= Executors.newFixedThreadPool(10);
+
     public static void main(String[] args) {
 
         String TAG="MAIN";
@@ -22,7 +24,6 @@ public class Main {
             int Relay_Port_2=11002;
             Utils.log(TAG, "Waiting for clients...");
 
-            ExecutorService executor= Executors.newFixedThreadPool(10);
             TCPIndexingServer tcp_server=new TCPIndexingServer(TCP_Port);
             RendezvousServer udp_server=new RendezvousServer(UDP_Port);
             ServerController controller=new ServerController(tcp_server, udp_server);
@@ -42,5 +43,9 @@ public class Main {
         }
 
 
+    }
+
+    public static ExecutorService getExecutor() {
+        return executor;
     }
 }

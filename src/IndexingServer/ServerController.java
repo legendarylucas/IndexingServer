@@ -42,6 +42,7 @@ public class ServerController implements Runnable{
 				tcp_server.stopServer();
 				Utils.log(TAG, "UDPServer Shutdown");
 				udp_server.stopServer();
+				Main.getExecutor().shutdownNow();
 				System.exit(0);
 				break;
 			default:
